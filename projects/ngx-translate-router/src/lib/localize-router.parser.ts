@@ -200,10 +200,20 @@ export abstract class LocalizeParser {
     return this.settings.alwaysSetPrefix || this.currentLang !== this.defaultLang ? this.currentLang : '';
   }
 
+  removeOldLangFromRoute(path: string) {
+    let local = this.locales.find(l => path.startsWith(`/${l}/`));
+    if (local) {
+      path = path.replace(`/${local}`, '');
+    }
+    return path;
+  }
+
   /**
    * Translate route and return observable
    */
   translateRoute(path: string): string {
+    path = this.removeOldLangFromRoute(path);
+
     const queryParts = path.split('?');
     if (queryParts.length > 2) {
       throw Error('There should be only one query parameter block in the URL');
@@ -357,7 +367,7 @@ export class ManualParserLoader extends LocalizeParser {
    */
   load(routes: Routes): Promise<any> {
     return new Promise((resolve: any) => {
-      this.init(routes).then(resolve);
+      this.init(routes).then(resolve).catch(err => console.log('Error', err));
     });
   }
 }

@@ -1,11 +1,10 @@
 import { Inject } from '@angular/core';
-// import { Location } from '@angular/common';
-import { Router, NavigationStart, ActivatedRouteSnapshot, NavigationExtras, ActivatedRoute } from '@angular/router';
+import { NavigationExtras, NavigationStart, RouteConfigLoadEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { filter, pairwise } from 'rxjs/operators';
-
-import { LocalizeParser } from './localize-router.parser';
+import { filter, pairwise, skip } from 'rxjs/operators';
 import { LocalizeRouterSettings } from './localize-router.config';
+import { LocalizeParser } from './localize-router.parser';
+
 
 /**
  * Localization service
@@ -18,13 +17,10 @@ export class LocalizeRouterService {
    * CTOR
    */
   constructor(
-      @Inject(LocalizeParser) public parser: LocalizeParser,
-      @Inject(LocalizeRouterSettings) public settings: LocalizeRouterSettings,
-      @Inject(Router) private router: Router,
-      @Inject(ActivatedRoute) private route: ActivatedRoute/*,
-      @Inject(Location) private location: Location*/
-    ) {
-      this.routerEvents = new Subject<string>();
+    @Inject(LocalizeParser) public parser: LocalizeParser,
+    @Inject(LocalizeRouterSettings) public settings: LocalizeRouterSettings,
+    @Inject(Router) private router: Router) {
+    this.routerEvents = new Subject<string>();
   }
 
   /**
@@ -39,6 +35,13 @@ export class LocalizeRouterService {
         pairwise()
       )
       .subscribe(this._routeChanged());
+    this.lazyModuleLoaded();
+  }
+
+  lazyModuleLoaded() {
+    this.router.events.pipe(filter(event => event instanceof RouteConfigLoadEnd), skip(1)).subscribe((e: RouteConfigLoadEnd) => {
+      this.parser.initChildRoutes([].concat(...[e.route]));
+    });
   }
 
   /**
@@ -49,11 +52,11 @@ export class LocalizeRouterService {
     //   console.log(this.route);
     // }
     if (lang !== this.parser.currentLang) {
-      const rootSnapshot: ActivatedRouteSnapshot = this.router.routerState.snapshot.root;
+      let url: string = this.router.url; //this.router.routerState.snapshot.root;
 
       this.parser.translateRoutes(lang).subscribe(() => {
 
-        let url = this.traverseRouteSnapshot(rootSnapshot);
+        //let url = this.traverseRouteSnapshot(rootSnapshot);
         url = this.translateRoute(url) as string;
 
         if (!this.settings.alwaysSetPrefix) {
@@ -95,50 +98,6 @@ export class LocalizeRouterService {
         }
       });
     }
-  }
-
-  /**
-   * Traverses through the tree to assemble new translated url
-   */
-  private traverseRouteSnapshot(snapshot: ActivatedRouteSnapshot): string {
-
-    if (snapshot.firstChild && snapshot.routeConfig) {
-      return `${this.parseSegmentValue(snapshot)}/${this.traverseRouteSnapshot(snapshot.firstChild)}`;
-    } else if (snapshot.firstChild) {
-      return this.traverseRouteSnapshot(snapshot.firstChild);
-    } else {
-      return this.parseSegmentValue(snapshot);
-    }
-    /* if (snapshot.firstChild && snapshot.firstChild.routeConfig && snapshot.firstChild.routeConfig.path) {
-      if (snapshot.firstChild.routeConfig.path !== '**') {
-        return this.parseSegmentValue(snapshot) + '/' + this.traverseRouteSnapshot(snapshot.firstChild);
-      } else {
-        return this.parseSegmentValue(snapshot.firstChild);
-      }
-    }
-    return this.parseSegmentValue(snapshot); */
-  }
-
-  /**
-   * Extracts new segment value based on routeConfig and url
-   */
-  private parseSegmentValue(snapshot: ActivatedRouteSnapshot): string {
-    if (snapshot.data.localizeRouter) {
-      const path = snapshot.data.localizeRouter.path;
-      const subPathSegments = path.split('/');
-      return subPathSegments.map((s: string, i: number) => s.indexOf(':') === 0 ? snapshot.url[i].path : s).join('/');
-    } else {
-      return '';
-    }
-    /* if (snapshot.routeConfig) {
-      if (snapshot.routeConfig.path === '**') {
-        return snapshot.url.filter((segment: UrlSegment) => segment.path).map((segment: UrlSegment) => segment.path).join('/');
-      } else {
-        const subPathSegments = snapshot.routeConfig.path.split('/');
-        return subPathSegments.map((s: string, i: number) => s.indexOf(':') === 0 ? snapshot.url[i].path : s).join('/');
-      }
-    }
-    return ''; */
   }
 
   /**

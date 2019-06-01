@@ -14,7 +14,6 @@ import {
   RAW_ROUTES,
   USE_CACHED_LANG
 } from './localize-router.config';
-import { LocalizeRouterConfigLoader } from './localize-router-config-loader';
 import { GilsdavReuseStrategy } from './gilsdav-reuse-strategy';
 
 @Injectable()
@@ -79,7 +78,6 @@ export class LocalizeRouterModule {
         },
         LocalizeRouterService,
         ParserInitializer,
-        { provide: NgModuleFactoryLoader, useClass: LocalizeRouterConfigLoader },
         {
           provide: APP_INITIALIZER,
           multi: true,

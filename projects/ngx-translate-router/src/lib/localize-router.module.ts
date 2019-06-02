@@ -14,7 +14,7 @@ import {
   RAW_ROUTES,
   USE_CACHED_LANG
 } from './localize-router.config';
-import { GilsdavReuseStrategy } from './gilsdav-reuse-strategy';
+import { HmubaireekReuseStrategy } from './hmubaireek-reuse-strategy';
 
 @Injectable()
 export class ParserInitializer {
@@ -86,7 +86,7 @@ export class LocalizeRouterModule {
         },
         {
           provide: RouteReuseStrategy,
-          useClass: GilsdavReuseStrategy
+          useClass: HmubaireekReuseStrategy
         }
       ]
     };

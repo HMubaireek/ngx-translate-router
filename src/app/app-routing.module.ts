@@ -5,8 +5,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { TranslateService } from '@ngx-translate/core';
 
-import { LocalizeRouterModule, LocalizeParser, ManualParserLoader, LocalizeRouterSettings } from '@gilsdav/ngx-translate-router';
-import { LocalizeRouterHttpLoader } from '@gilsdav/ngx-translate-router-http-loader';
+import { LocalizeRouterModule, LocalizeParser, ManualParserLoader, LocalizeRouterSettings } from '@hmubaireek/ngx-translate-router';
+import { LocalizeRouterHttpLoader } from '@hmubaireek/ngx-translate-router-http-loader';
 
 import { HomeComponent } from './home/home.component';
 

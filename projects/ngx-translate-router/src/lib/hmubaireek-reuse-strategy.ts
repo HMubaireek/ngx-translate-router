@@ -1,6 +1,6 @@
 import { RouteReuseStrategy, DetachedRouteHandle, ActivatedRouteSnapshot } from '@angular/router';
 
-export class GilsdavReuseStrategy implements RouteReuseStrategy {
+export class HmubaireekReuseStrategy implements RouteReuseStrategy {
   // private handlers: {[key: string]: DetachedRouteHandle} = {};
   constructor() {
   }

@@ -17,16 +17,16 @@
       "dom"
     ],
     "paths": {
-      "@gilsdav/ngx-translate-router": [
+      "@hmubaireek/ngx-translate-router": [
         "dist/ngx-translate-router"
       ],
-      "@gilsdav/ngx-translate-router/*": [
+      "@hmubaireek/ngx-translate-router/*": [
         "dist/ngx-translate-router/*"
       ],
-      "@gilsdav/ngx-translate-router-http-loader": [
+      "@hmubaireek/ngx-translate-router-http-loader": [
         "dist/ngx-translate-router-http-loader"
       ],
-      "@gilsdav/ngx-translate-router-http-loader/*": [
+      "@hmubaireek/ngx-translate-router-http-loader/*": [
         "dist/ngx-translate-router-http-loader/*"
       ]
     }

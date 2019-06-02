@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { LocalizeRouterService } from '@gilsdav/ngx-translate-router';
+import { LocalizeRouterService } from '@hmubaireek/ngx-translate-router';
 
 @Component({
   selector: 'app-bob',

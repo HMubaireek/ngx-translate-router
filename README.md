@@ -34,23 +34,23 @@ Demo project can be found under sub folder `src`.
 ## Installation
 
 ```
-npm install --save @gilsdav/ngx-translate-router
+npm install --save @hmubaireek/ngx-translate-router
 ```
 
 ## Usage
 
-In order to use `@gilsdav/ngx-translate-router` you must initialize it with following information:
+In order to use `@hmubaireek/ngx-translate-router` you must initialize it with following information:
 * Available languages/locales
 * Prefix for route segment translations
 * Routes to be translated
 
 ### Initialize module
-`import {LocalizeRouterModule} from '@gilsdav/ngx-translate-router';`
+`import {LocalizeRouterModule} from '@hmubaireek/ngx-translate-router';`
 Module can be initialized either using static file or manually by passing necessary values.
 
 #### Http loader
 
-In order to use Http loader for config files, you must include `@gilsdav/ngx-translate-router-http-loader` package and use its `LocalizeRouterHttpLoader`. 
+In order to use Http loader for config files, you must include `@hmubaireek/ngx-translate-router-http-loader` package and use its `LocalizeRouterHttpLoader`. 
 
 ```ts
 import {BrowserModule} from "@angular/platform-browser";
@@ -58,8 +58,8 @@ import {NgModule} from '@angular/core';
 import {Location} from '@angular/common';
 import {HttpClientModule, HttpClient} from '@angular/common/http';
 import {TranslateModule} from '@ngx-translate/core';
-import {LocalizeRouterModule} from '@gilsdav/ngx-translate-router';
-import {LocalizeRouterHttpLoader} from '@gilsdav/ngx-translate-router-http-loader';
+import {LocalizeRouterModule} from '@hmubaireek/ngx-translate-router';
+import {LocalizeRouterHttpLoader} from '@hmubaireek/ngx-translate-router-http-loader';
 import {RouterModule} from '@angular/router';
 
 import {routes} from './app.routes';

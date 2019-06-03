@@ -39,8 +39,14 @@ export class LocalizeRouterService {
   }
 
   lazyModuleLoaded() {
-    this.router.events.pipe(filter(event => event instanceof RouteConfigLoadEnd), skip(1)).subscribe((e: RouteConfigLoadEnd) => {
-      this.parser.initChildRoutes([].concat(...[e.route]));
+    this.router.events.pipe(filter(event => event instanceof RouteConfigLoadEnd)).subscribe((e: RouteConfigLoadEnd) => {
+      if (e.route && (<any>e.route)._loadedConfig)
+        this.parser.initChildRoutes([].concat(...[e.route]));
+      else {
+        setTimeout(() => {
+          this.parser.initChildRoutes([].concat(...[e.route]));
+        }, 500);
+      }
     });
   }
 
